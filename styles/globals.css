@@ -1,0 +1,85 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --font-sans: system-ui, -apple-system, sans-serif;
+    --font-mono: 'Courier New', monospace;
+  }
+
+  * {
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: 'rasterization' 1;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-bold tracking-tight;
+  }
+
+  a {
+    @apply transition-colors duration-200;
+  }
+
+  button {
+    @apply transition-all duration-200 ease-out;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply px-6 py-3 bg-primary font-semibold rounded-lg shadow-neon hover:shadow-neon-lg hover:scale-105 transition-all duration-300;
+  }
+
+  .btn-secondary {
+    @apply px-6 py-3 border border-primary/50 text-primary font-semibold rounded-lg hover:shadow-neon hover:scale-105 transition-all duration-300;
+  }
+
+  .glass {
+    @apply bg-white/5 backdrop-blur-glass border border-glass rounded-2xl;
+  }
+
+  .glass-hover {
+    @apply glass hover:bg-white/10 hover:border-primary/50 transition-all duration-300;
+  }
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Prevent text selection on UI elements */
+button,
+a {
+  user-select: none;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: #09090b;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #8B5CF6;
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #6D28D9;
+}

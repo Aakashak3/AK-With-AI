@@ -1,0 +1,37 @@
+{
+  "name": "ai-prompt-engine-portfolio",
+  "version": "1.0.0",
+  "description": "Full-stack portfolio and AI prompt marketplace built with Next.js, Supabase, and Framer Motion",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "generate:types": "echo 'Run supabase gen types typescript --local to generate DB types'"
+  },
+  "keywords": [
+    "nextjs",
+    "supabase",
+    "portfolio",
+    "ai-prompts"
+  ],
+  "author": "DevAI",
+  "license": "MIT",
+  "dependencies": {
+    "@supabase/ssr": "^0.8.0",
+    "@supabase/supabase-js": "^2.38.0",
+    "autoprefixer": "^10.4.17",
+    "framer-motion": "^10.16.16",
+    "next": "^14.2.0",
+    "postcss": "^8.4.35",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "tailwindcss": "^3.4.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.6",
+    "@types/react": "^18.2.45",
+    "@types/react-dom": "^18.2.18",
+    "typescript": "^5.3.3"
+  }
+}
