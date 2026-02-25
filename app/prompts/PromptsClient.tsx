@@ -126,6 +126,8 @@ export default function PromptsClient() {
                         <div className="relative">
                             <input
                                 type="text"
+                                id="search-prompts"
+                                name="search"
                                 placeholder="Search prompts..."
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
