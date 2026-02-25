@@ -15,19 +15,30 @@ export default function AdminLogin() {
   const router = useRouter();
 
   // Redirect if already logged in AND is admin
+  // Using a delay to ensure auth state has updated after login
   useEffect(() => {
-    if (user && isAdmin) {
-      router.push('/admin/dashboard');
-    }
+    const timer = setTimeout(() => {
+      if (user && isAdmin) {
+        router.push('/admin/dashboard');
+      }
+    }, 500);
+    
+    return () => clearTimeout(timer);
   }, [user, isAdmin, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!email || !password) {
+      return;
+    }
+    
     setIsLoading(true);
 
     try {
       await login(email, password);
-      router.push('/admin/dashboard');
+      // Small delay to allow auth state to update before redirect
+      await new Promise(resolve => setTimeout(resolve, 300));
     } catch (err) {
       console.error('Login error:', err);
     } finally {

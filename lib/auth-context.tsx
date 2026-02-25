@@ -70,9 +70,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         throw new Error(error.message);
       }
 
+      // Wait for auth state to update via onAuthStateChange
+      // This ensures the user state is properly set before we check admin status
+      await new Promise(resolve => setTimeout(resolve, 100));
+
       const { data: { user: authUser } } = await supabase.auth.getUser();
       if (authUser && !ENV_ADMINS.includes(authUser.email?.toLowerCase() || '')) {
         await supabase.auth.signOut();
+        setUser(null);
         throw new Error('Unauthorized: Only admins can access this area');
       }
     } catch (err) {
