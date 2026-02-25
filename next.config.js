@@ -32,8 +32,8 @@ const nextConfig = {
           },
           {
             key: 'Content-Security-Policy',
-            // Inga 'wss://uonhtwihplrrkczjtbmj.supabase.co' add panniyachu. Ippo error varathu.
-            value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https: wss://uonhtwihplrrkczjtbmj.supabase.co uonhtwihplrrkczjtbmj.supabase.co; frame-ancestors 'none';",
+            // Removed 'unsafe-eval' for better security. Using 'unsafe-inline' for Next.js compatibility.
+            value: "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https: wss://uonhtwihplrrkczjtbmj.supabase.co uonhtwihplrrkczjtbmj.supabase.co; frame-ancestors 'none';",
           },
         ],
       },

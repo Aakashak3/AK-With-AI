@@ -10,7 +10,16 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
 
-  const toggleMenu = () => setIsOpen(!isOpen);
+  const toggleMenu = () => {
+    if (isOpen) {
+      // Close menu: move focus to toggle button before hiding
+      const toggleButton = document.querySelector('[aria-label="Toggle Menu"]') as HTMLButtonElement;
+      if (toggleButton) {
+        toggleButton.focus();
+      }
+    }
+    setIsOpen(!isOpen);
+  };
 
   return (
     <motion.nav
