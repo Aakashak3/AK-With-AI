@@ -123,6 +123,9 @@ export default function PromptsClient() {
                         transition={{ duration: 0.5, delay: 0.1 }}
                         className="max-w-2xl mx-auto mb-8"
                     >
+                        <label htmlFor="search-prompts" className="sr-only">
+                            Search prompts
+                        </label>
                         <div className="relative">
                             <input
                                 type="text"
