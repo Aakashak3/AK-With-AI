@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuth } from '@/lib/auth-context';
 import Link from 'next/link';
 
@@ -11,8 +11,15 @@ export default function AdminLogin() {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const { login, loginWithGoogle, error, user, isAdmin } = useAuth();
+  const { login, loginWithGoogle, error: authError, user, isAdmin } = useAuth();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  
+  // Get error from URL params (from OAuth redirect)
+  const urlError = searchParams.get('error');
+  
+  // Combine auth context error and URL error
+  const error = authError || (urlError === 'unauthorized' ? 'Unauthorized: Only admins can access this area' : urlError ? 'Authentication failed. Please try again.' : null);
 
   // Redirect if already logged in AND is admin
   // Using a delay to ensure auth state has updated after login

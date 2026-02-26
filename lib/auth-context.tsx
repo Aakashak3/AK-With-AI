@@ -93,10 +93,30 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       setError(null);
       setLoading(true);
+      
+      // First, check if the user is already authenticated and is an admin
+      const { data: { user: currentUser } } = await supabase.auth.getUser();
+      
+      if (currentUser) {
+        // User is already logged in, check if they're an admin
+        const userEmail = currentUser.email?.toLowerCase() || '';
+        if (!ENV_ADMINS.includes(userEmail)) {
+          // Already logged in but not admin - sign them out first
+          await supabase.auth.signOut();
+          setUser(null);
+          throw new Error('Unauthorized: Only admins can access this area. Please sign in with the authorized admin Gmail account.');
+        }
+        // User is admin, redirect to dashboard
+        window.location.href = '/admin/dashboard';
+        return;
+      }
+      
+      // No existing session - start OAuth flow
+      // Use the API route for proper server-side session handling
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/admin/dashboard`,
+          redirectTo: `${window.location.origin}/api/auth/callback`,
           queryParams: {
             prompt: 'select_account' // Force account selection to avoid auto-logging into wrong Gmail
           }
