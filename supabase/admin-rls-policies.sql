@@ -11,7 +11,7 @@ DROP POLICY IF EXISTS "Allow admin write" ON public.services;
 CREATE OR REPLACE FUNCTION is_admin() 
 RETURNS BOOLEAN AS $$
 BEGIN
-  RETURN auth.jwt() ->> 'email' = ANY(ARRAY['admin@devai.com', 'test@devai.com']);
+  RETURN auth.jwt() ->> 'email' = ANY(ARRAY['aakashnarayanan465@gmail.com', 'admin@akwithai.blog']);
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
