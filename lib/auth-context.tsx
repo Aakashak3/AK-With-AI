@@ -112,11 +112,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
       
       // No existing session - start OAuth flow
-      // Use the API route for proper server-side session handling
+      // Direct redirect to dashboard after Google auth
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/api/auth/callback`,
+          redirectTo: 'https://akwithai.blog/admin/dashboard',
           queryParams: {
             prompt: 'select_account' // Force account selection to avoid auto-logging into wrong Gmail
           }
