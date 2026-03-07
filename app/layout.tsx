@@ -5,7 +5,7 @@ import { AuthProvider } from '@/lib/auth-context';
 import '@/styles/globals.css';
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://akwithai.com'),
+  metadataBase: new URL('https://akwithai.blog'),
   title: {
     default: 'AK with AI - Full Stack Developer & AI Automation Expert',
     template: '%s | AK with AI'
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://akwithai.com',
+    url: 'https://akwithai.blog',
     siteName: 'AK with AI Portfolio',
     title: 'AK with AI - Full Stack Developer & AI Automation Expert',
     description: 'N. Aakash - Crafting cutting-edge web applications powered by AI.',
@@ -61,7 +61,7 @@ export default function RootLayout({
     '@context': 'https://schema.org',
     '@type': 'Person',
     name: 'N. Aakash',
-    url: 'https://akwithai.com',
+    url: 'https://akwithai.blog',
     jobTitle: 'Full Stack Developer & AI Automation Expert',
     sameAs: [
       'https://youtube.com/@akwithai',
