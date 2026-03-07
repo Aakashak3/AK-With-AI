@@ -12,7 +12,7 @@ function AdminLoginContent() {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const { login, loginWithGoogle, error: authError, user, isAdmin } = useAuth();
+  const { login, loginWithGoogle, error: authError, user, isAdmin, loading } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
   
@@ -20,13 +20,16 @@ function AdminLoginContent() {
   const error = authError || (urlError === 'unauthorized' ? 'Unauthorized: Only admins can access this area' : urlError ? 'Authentication failed. Please try again.' : null);
 
   useEffect(() => {
+    // Don't redirect while loading auth state
+    if (loading) return;
+    
     const timer = setTimeout(() => {
       if (user && isAdmin) {
         router.push('/admin/dashboard');
       }
     }, 500);
     return () => clearTimeout(timer);
-  }, [user, isAdmin, router]);
+  }, [user, isAdmin, loading, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

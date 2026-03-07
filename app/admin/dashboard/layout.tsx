@@ -14,9 +14,12 @@ export default function AdminLayout({
   const router = useRouter();
 
   useEffect(() => {
-    if (!loading && !user) {
+    // Don't redirect while loading auth state
+    if (loading) return;
+    
+    if (!user) {
       router.push('/admin');
-    } else if (!loading && user && !isAdmin) {
+    } else if (user && !isAdmin) {
       router.push('/admin');
     }
   }, [user, loading, isAdmin, router]);
