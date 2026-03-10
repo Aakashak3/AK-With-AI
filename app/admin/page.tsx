@@ -19,17 +19,7 @@ function AdminLoginContent() {
   const urlError = searchParams.get('error');
   const error = authError || (urlError === 'unauthorized' ? 'Unauthorized: Only admins can access this area' : urlError ? 'Authentication failed. Please try again.' : null);
 
-  useEffect(() => {
-    // Don't redirect while loading auth state
-    if (loading) return;
-    
-    const timer = setTimeout(() => {
-      if (user && isAdmin) {
-        router.push('/admin/dashboard');
-      }
-    }, 500);
-    return () => clearTimeout(timer);
-  }, [user, isAdmin, loading, router]);
+  // Removed brittle client-side redirect. The server (route.ts) now handles this reliably.
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

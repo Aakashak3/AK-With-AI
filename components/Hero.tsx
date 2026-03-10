@@ -53,46 +53,28 @@ export default function Hero({
       </div>
 
       {/* Content */}
-      <motion.div
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-        className="relative z-10 max-w-4xl mx-auto text-center"
-      >
+      <div className="relative z-10 max-w-4xl mx-auto text-center">
         {/* Title */}
-        <motion.h1
-          variants={itemVariants}
-          className="text-4xl md:text-7xl font-bold text-white mb-4"
-        >
+        <h1 className="text-4xl md:text-7xl font-bold text-white mb-4">
           {title}
-        </motion.h1>
+        </h1>
 
         {/* Subtitle with gradient */}
-        <motion.h2
-          variants={itemVariants}
-          className="text-3xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent"
-        >
+        <h2 className="text-3xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
           {subtitle}
-        </motion.h2>
+        </h2>
 
         {/* Description */}
-        <motion.p
-          variants={itemVariants}
-          className="text-lg md:text-xl text-foreground/70 mb-8 max-w-2xl mx-auto leading-relaxed"
-        >
+        <p className="text-lg md:text-xl text-foreground/70 mb-8 max-w-2xl mx-auto leading-relaxed">
           {description}
-        </motion.p>
+        </p>
 
         {/* CTA Buttons */}
-        <motion.div
-          variants={itemVariants}
-          className="flex gap-4 justify-center flex-wrap"
-        >
+        <div className="flex gap-4 justify-center flex-wrap">
           {buttons.map((button) => (
-            <motion.div
+            <div
               key={button.href}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              className="hover:scale-105 active:scale-95 transition-transform duration-200"
             >
               <Link
                 href={button.href}
@@ -105,10 +87,10 @@ export default function Hero({
                 {button.label === 'Hire Me' && '💼'}
                 {button.label}
               </Link>
-            </motion.div>
+            </div>
           ))}
-        </motion.div>
-      </motion.div>
+        </div>
+      </div>
 
       {/* Scroll indicator */}
       <motion.div

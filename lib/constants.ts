@@ -163,7 +163,24 @@ export const PROMPT_DATA = [
   },
 ];
 
-export const YOUTUBE_VIDEOS = [];
+export const YOUTUBE_VIDEOS = [
+  {
+    id: 'vid-1',
+    title: 'AI Automation with Next.js',
+    description: 'Learn how to integrate OpenAI into your Next.js applications.',
+    thumbnail_url: 'https://placehold.co/400x300?text=AI+Automation',
+    youtube_url: 'https://youtube.com/watch?v=example1',
+    created_at: new Date().toISOString()
+  },
+  {
+    id: 'vid-2',
+    title: 'Mastering Supabase SSR',
+    description: 'A deep dive into server-side auth with Supabase.',
+    thumbnail_url: 'https://placehold.co/400x300?text=Supabase+SSR',
+    youtube_url: 'https://youtube.com/watch?v=example2',
+    created_at: new Date().toISOString()
+  }
+];
 
 export const SERVICES_DATA = [
   {

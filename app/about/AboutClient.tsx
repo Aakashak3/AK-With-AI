@@ -82,23 +82,13 @@ export default function AboutClient() {
                     transition={{ duration: 8, repeat: Infinity }}
                 />
 
-                <motion.div
-                    initial={{ opacity: 0, scale: 0 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.8 }}
-                    className="relative z-10 mb-8"
-                >
+                <div className="relative z-10 mb-8">
                     <div className="w-32 h-32 rounded-full border-2 border-primary/50 flex items-center justify-center bg-gradient-to-br from-primary/20 to-accent/20 backdrop-blur-lg shadow-neon">
                         <span className="text-6xl">👤</span>
                     </div>
-                </motion.div>
+                </div>
 
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: 0.2 }}
-                    className="text-center relative z-10 max-w-3xl"
-                >
+                <div className="text-center relative z-10 max-w-3xl">
                     <h1 className="text-4xl md:text-6xl font-bold mb-4">
                         <span className="text-white">About </span>
                         <span className="text-primary">Me</span>
@@ -106,7 +96,7 @@ export default function AboutClient() {
                     <p className="text-lg text-foreground/70">
                         Passionate developer transforming ideas into innovative digital solutions
                     </p>
-                </motion.div>
+                </div>
 
                 {/* Bio Card */}
                 <motion.div

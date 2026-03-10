@@ -9,29 +9,20 @@ export default function ContactClient() {
         <>
             <section className="min-h-[30vh] bg-gradient-to-b from-background via-background to-background px-4 py-16">
                 <div className="max-w-4xl mx-auto text-center">
-                    <motion.div
-                        initial={{ opacity: 0, y: -20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6 }}
-                    >
+                    <div>
                         <h1 className="text-5xl md:text-6xl font-bold text-white mb-4">
                             Get in Touch
                         </h1>
                         <p className="text-lg text-foreground/70">
                             Have a project in mind? Let's discuss how I can help bring your vision to life
                         </p>
-                    </motion.div>
+                    </div>
                 </div>
             </section>
 
             <section className="bg-gradient-to-b from-background to-background px-4 py-12">
                 <div className="max-w-7xl mx-auto">
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 0.6, delay: 0.1 }}
-                        className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6 mb-16"
-                    >
+                    <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6 mb-16">
                         {CONTACT_METHODS.map((method, index) => (
                             <motion.a
                                 key={method.id}
@@ -57,7 +48,7 @@ export default function ContactClient() {
                                 </span>
                             </motion.a>
                         ))}
-                    </motion.div>
+                    </div>
                 </div>
             </section>
 

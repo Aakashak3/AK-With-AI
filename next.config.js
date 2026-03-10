@@ -32,8 +32,7 @@ const nextConfig = {
           },
           {
             key: 'Content-Security-Policy',
-            // Removed 'unsafe-eval' for better security. Using 'unsafe-inline' for Next.js compatibility.
-            value: "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https: wss://uonhtwihplrrkczjtbmj.supabase.co uonhtwihplrrkczjtbmj.supabase.co; frame-ancestors 'none';",
+            value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https: wss://uonhtwihplrrkczjtbmj.supabase.co uonhtwihplrrkczjtbmj.supabase.co *; frame-ancestors 'none';",
           },
         ],
       },

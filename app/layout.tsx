@@ -14,6 +14,11 @@ export const metadata: Metadata = {
   keywords: ['N. Aakash', 'AK with AI', 'web development', 'AI automation', 'prompt engineering', 'Next.js', 'full-stack', 'freelance developer'],
   authors: [{ name: 'N. Aakash' }],
   creator: 'N. Aakash',
+  icons: {
+    icon: '/favicon.ico',
+    shortcut: '/favicon.ico',
+    apple: '/favicon.ico',
+  },
   openGraph: {
     type: 'website',
     locale: 'en_US',

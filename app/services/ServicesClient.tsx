@@ -6,37 +6,33 @@ import Link from 'next/link';
 import ServiceCard from '@/components/ServiceCard';
 import ProjectCard from '@/components/ProjectCard';
 import AdBanner from '@/components/AdBanner';
-import { PROJECTS_DATA } from '@/lib/constants';
 import { supabase } from '@/lib/supabase';
-
-interface Service {
-    id: string;
-    icon: string;
-    title: string;
-    description: string;
-    image_url?: string | null;
-    included: string[];
-    cta: {
-        text: string;
-        href: string;
-    };
-}
+import { SERVICES_DATA, PROJECTS_DATA } from '@/lib/constants';
 
 export default function ServicesClient() {
-    const [services, setServices] = useState<Service[]>([]);
-    const [projects, setProjects] = useState<any[]>([]);
+    const [services, setServices] = useState<any[]>(SERVICES_DATA);
+    const [projects, setProjects] = useState<any[]>(PROJECTS_DATA);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        console.log('ServicesClient: useEffect firing');
         const fetchData = async () => {
+            console.log('ServicesClient: fetchData starting');
+            const timeoutPromise = new Promise((_, reject) =>
+                setTimeout(() => reject(new Error('Request timed out')), 5000)
+            );
+
             try {
-                const [servicesRes, projectsRes] = await Promise.all([
+                console.log('ServicesClient: firing Supabase promise');
+                const fetchPromise = Promise.all([
                     supabase.from('services').select('*').order('created_at', { ascending: true }).returns<any[]>(),
                     supabase.from('projects').select('*').order('created_at', { ascending: false }).returns<any[]>()
                 ]);
 
-                if (servicesRes.data) {
-                    const formattedServices = servicesRes.data.map((s) => ({
+                const [servicesRes, projectsRes] = await Promise.race([fetchPromise, timeoutPromise]) as any;
+
+                if (servicesRes.data && servicesRes.data.length > 0) {
+                    const formattedServices = servicesRes.data.map((s: any) => ({
                         id: s.id,
                         icon: '⚡',
                         title: s.name,
@@ -49,19 +45,33 @@ export default function ServicesClient() {
                         },
                     }));
                     setServices(formattedServices);
+                } else {
+                    setServices([]);
                 }
 
-                if (projectsRes.data) {
+                if (projectsRes.data && projectsRes.data.length > 0) {
                     setProjects(projectsRes.data);
+                } else {
+                    setProjects([]);
                 }
             } catch (error) {
                 console.error('Error fetching data:', error);
+                setServices([]);
+                setProjects([]);
             } finally {
                 setLoading(false);
             }
         };
 
         fetchData();
+
+        // Safety net
+        const timer = setTimeout(() => {
+            console.log('ServicesClient: Safety net triggered, clearing loading');
+            setLoading(false);
+        }, 3000);
+
+        return () => clearTimeout(timer);
     }, []);
 
     return (
@@ -69,16 +79,12 @@ export default function ServicesClient() {
             {/* Header Section */}
             <section className="min-h-[30vh] bg-gradient-to-b from-background via-background to-background px-4 py-16">
                 <div className="max-w-7xl mx-auto text-center">
-                    <motion.div
-                        initial={{ opacity: 0, y: -20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6 }}
-                    >
+                    <div>
                         <h1 className="text-5xl md:text-6xl font-bold text-white mb-4">Services</h1>
                         <p className="text-lg text-foreground/70 max-w-2xl mx-auto">
                             Transform your ideas into reality with cutting-edge development and AI solutions
                         </p>
-                    </motion.div>
+                    </div>
 
                     {/* Advertisement */}
                     <AdBanner location="prompts_bottom" className="mt-12 max-w-4xl mx-auto" />

@@ -16,11 +16,12 @@ export default function AdminLayout({
   useEffect(() => {
     // Don't redirect while loading auth state
     if (loading) return;
-    
+
     if (!user) {
       router.push('/admin');
     } else if (user && !isAdmin) {
-      router.push('/admin');
+      // Redirect to /admin with error flag to prevent infinite loop
+      router.push('/admin?error=unauthorized');
     }
   }, [user, loading, isAdmin, router]);
 

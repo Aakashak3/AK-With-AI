@@ -22,12 +22,7 @@ export default function Navbar() {
   };
 
   return (
-    <motion.nav
-      initial={{ opacity: 0, y: -20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-      className="sticky top-0 z-50 bg-background/80 backdrop-blur-lg border-b border-white/10"
-    >
+    <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-lg border-b border-white/10">
       <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 group z-50">
@@ -45,8 +40,9 @@ export default function Navbar() {
             <Link
               key={link.href}
               href={link.href}
-              className={`px-3 py-2 text-sm transition-colors rounded-lg hover:bg-white/5 ${pathname === link.href ? 'text-primary' : 'text-foreground/70 hover:text-primary'
-                }`}
+              className={`px-3 py-2 text-sm transition-colors rounded-lg hover:bg-white/5 ${
+                pathname === link.href ? 'text-primary' : 'text-foreground/70 hover:text-primary'
+              }`}
             >
               {link.label}
             </Link>
@@ -55,14 +51,12 @@ export default function Navbar() {
 
         {/* Desktop Admin Login */}
         <div className="hidden md:block">
-          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-            <Link
-              href="/admin"
-              className="text-sm px-4 py-2 rounded-lg border border-primary/50 text-primary hover:shadow-neon transition-all duration-300"
-            >
-              Admin Login
-            </Link>
-          </motion.div>
+          <Link
+            href="/admin"
+            className="text-sm px-4 py-2 rounded-lg border border-primary/50 text-primary hover:shadow-neon transition-all duration-300"
+          >
+            Admin Login
+          </Link>
         </div>
 
         {/* Mobile Menu Toggle Button */}
@@ -72,65 +66,56 @@ export default function Navbar() {
           aria-label="Toggle Menu"
         >
           <div className="w-6 h-5 flex flex-col justify-between">
-            <motion.span
-              animate={isOpen ? { rotate: 45, y: 8 } : { rotate: 0, y: 0 }}
-              className="w-full h-0.5 bg-current rounded-full"
+            <span
+              className={`w-full h-0.5 bg-current rounded-full transition-all duration-300 ${
+                isOpen ? 'rotate-45 translate-y-2' : ''
+              }`}
             />
-            <motion.span
-              animate={isOpen ? { opacity: 0 } : { opacity: 1 }}
-              className="w-full h-0.5 bg-current rounded-full"
+            <span
+              className={`w-full h-0.5 bg-current rounded-full transition-all duration-300 ${
+                isOpen ? 'opacity-0' : 'opacity-1'
+              }`}
             />
-            <motion.span
-              animate={isOpen ? { rotate: -45, y: -8 } : { rotate: 0, y: 0 }}
-              className="w-full h-0.5 bg-current rounded-full"
+            <span
+              className={`w-full h-0.5 bg-current rounded-full transition-all duration-300 ${
+                isOpen ? '-rotate-45 -translate-y-2' : ''
+              }`}
             />
           </div>
         </button>
       </div>
 
       {/* Mobile Menu Overlay */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            className="md:hidden overflow-hidden bg-background border-b border-white/10"
-          >
-            <div className="px-4 py-8 space-y-4">
-              {NAV_LINKS.map((link) => (
-                <motion.div
-                  key={link.href}
-                  initial={{ x: -20, opacity: 0 }}
-                  animate={{ x: 0, opacity: 1 }}
-                >
-                  <Link
-                    href={link.href}
-                    onClick={() => setIsOpen(false)}
-                    className={`block text-2xl font-bold transition-all ${pathname === link.href ? 'text-primary' : 'text-white/60 hover:text-primary'
-                      }`}
-                  >
-                    {link.label}
-                  </Link>
-                </motion.div>
-              ))}
-              <motion.div
-                initial={{ x: -20, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                className="pt-4 border-t border-white/10"
+      <div
+        className={`md:hidden overflow-hidden bg-background border-b border-white/10 transition-all duration-300 ${
+          isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+        }`}
+      >
+        <div className="px-4 py-8 space-y-4">
+          {NAV_LINKS.map((link) => (
+            <div key={link.href}>
+              <Link
+                href={link.href}
+                onClick={() => setIsOpen(false)}
+                className={`block text-2xl font-bold transition-all ${
+                  pathname === link.href ? 'text-primary' : 'text-white/60 hover:text-primary'
+                }`}
               >
-                <Link
-                  href="/admin"
-                  onClick={() => setIsOpen(false)}
-                  className="inline-block px-6 py-2 bg-gradient-to-r from-primary to-accent rounded-lg font-bold text-white"
-                >
-                  Admin Login
-                </Link>
-              </motion.div>
+                {link.label}
+              </Link>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </motion.nav>
+          ))}
+          <div className="pt-4 border-t border-white/10">
+            <Link
+              href="/admin"
+              onClick={() => setIsOpen(false)}
+              className="inline-block px-6 py-2 bg-gradient-to-r from-primary to-accent rounded-lg font-bold text-white"
+            >
+              Admin Login
+            </Link>
+          </div>
+        </div>
+      </div>
+    </nav>
   );
 }
