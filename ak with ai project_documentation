@@ -1,0 +1,99 @@
+# Project Documentation: AK with AI Professional Portfolio & Prompt Engine
+
+## 1. Project Overview
+**AK with AI** is a state-of-the-art, full-stack web application designed to serve as both a professional portfolio and an AI prompt marketplace. The platform provides a centralized hub for AI prompt engineering while showcasing a developer's expertise in automation, full-stack development, and modern UI/UX design.
+
+### Purpose
+- **Professional Showcase**: Demonstrating full-stack capabilities to potential clients and employers.
+- **AI Prompt Repository**: Providing a curated collection of optimized prompts for various AI models (Image, Video, Coding).
+- **Service Management**: Offering a platform to manage and sell professional services.
+- **Content Hub**: Integrating YouTube video content and internal advertising directly into the portfolio.
+
+---
+
+## 2. Technology Stack
+
+### Frontend
+- **Framework**: [Next.js 14+](https://nextjs.org/) (App Router Architecture)
+- **Library**: [React 18](https://react.dev/)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/) (Custom "Electric Purple" neon theme)
+- **Animations**: [Framer Motion](https://www.framer.com/motion/) (Smooth transitions and hover effects)
+- **Language**: [TypeScript](https://www.typescriptlang.org/) (Full type safety)
+
+### Backend & Infrastructure
+- **BaaS (Backend as a Service)**: [Supabase](https://supabase.com/)
+- **Database**: [PostgreSQL](https://www.postgresql.org/)
+- **Authentication**: Supabase Auth (SSR support)
+- **File Storage**: Supabase Storage (for images and media)
+- **Deployment**: [Vercel](https://vercel.com/) (Atomic builds and edge serving)
+
+---
+
+## 3. System Architecture
+
+### Frontend Architecture
+The project follows the **Next.js App Router** pattern, utilizing both Server and Client Components to optimize performance:
+- **Server Components**: Used for static pages and initial data fetching to improve SEO and load times.
+- **Client Components**: Used for interactive sections like the Admin Dashboard, contact forms, and filtering systems.
+- **Shared Components**: A modular `components/` directory housing reusable UI elements (GlassCard, FeatureCard, Nabvar, Footer).
+
+### Backend Architecture
+The backend is powered by **Supabase**, offering a serverless architecture:
+- **Direct Data Access**: The frontend communicates with the PostgreSQL database via the Supabase client.
+- **Real-time Engine**: (Capable of) real-time updates for messages and dashboard stats.
+- **Edge Middleware**: Next.js Middleware handles authentication checks and session synchronization at the edge, before requests reach the server.
+
+---
+
+## 4. Authentication & Security Mechanisms
+
+### Security Layers
+1. **Edge Middleware Guard**: 
+   - Protects all `/admin/dashboard` routes.
+   - Refreshes sessions automatically and synchronizes cookies between the server and client.
+2. **Admin Whitelist System**:
+   - Access is restricted to a specific list of authorized emails (`ADMIN_EMAILS`).
+   - Unauthorized users trying to access administrative pages are automatically redirected or signed out.
+3. **Database Row Level Security (RLS)**:
+   - **Public Access**: High-level read access for prompts, services, and videos.
+   - **Admin Access**: Write/Update/Delete access is strictly enforced at the database level using `auth.jwt()`. Even if the frontend is bypassed, the database remains secure.
+4. **Hardened Headers**:
+   - Custom **Content Security Policy (CSP)** to prevent XSS.
+   - **Anti-Clickjacking** protection via `X-Frame-Options`.
+
+---
+
+## 5. Main Features & Modules
+
+### 🚀 Public Features
+- **Hero & Branding**: A high-impact "Neon Dark Mode" aesthetic with custom glassmorphism effects.
+- **AI Prompts Library**: A category-based filtering system where users can browse and copy optimized AI prompts.
+- **Dynamic YouTube Gallery**: A video gallery that stays synchronized with the developer's YouTube channel.
+- **Services Showcase**: Detailed listing of professional service offerings with direct contact integration.
+- **Contact System**: An integrated message management system for client inquiries.
+
+### 🔐 Admin Dashboard
+A full Content Management System (CMS) that allows the admin to:
+- **Prompts Management**: Create, edit, and categorize AI prompts.
+- **Video Management**: Manage YouTube video links and metadata.
+- **Service Management**: Update service offerings, descriptions, and pricing.
+- **Ads Engine**: Internal management of promotional banners and placement locations.
+- **Message Inbox**: View and manage inquiries received via the contact forms.
+
+---
+
+## 6. Project Directory Structure
+```text
+/
+├── app/              # Routing and Pages (Next.js App Router)
+├── components/       # Component Library (UI/Admin/Layout)
+├── lib/              # Core Logic (Config, Constants, Supabase Utils)
+├── styles/           # Global Styling (Tailwind Config)
+├── types/            # TypeScript Definitions (Database/UI)
+├── supabase/         # Database Schema & Migration Scripts
+└── public/           # Static Assets (Logos, Favicons)
+```
+
+---
+
+**Documentation Status**: v1.0 | Updated: March 2026

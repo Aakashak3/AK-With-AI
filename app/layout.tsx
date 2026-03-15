@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Navbar from '@/components/Navbar';
+import Script from 'next/script';
 import Footer from '@/components/Footer';
 import { AuthProvider } from '@/lib/auth-context';
 import '@/styles/globals.css';
@@ -94,6 +95,20 @@ export default function RootLayout({
         />
       </head>
       <body className="bg-background text-foreground">
+        {/* Google Analytics */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-W13PBC2WRG"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-W13PBC2WRG');
+          `}
+        </Script>
         <AuthProvider>
           <Navbar />
           <main>{children}</main>
