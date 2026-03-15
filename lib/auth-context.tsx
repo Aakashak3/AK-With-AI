@@ -4,6 +4,8 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { supabase } from './supabase';
 import type { User } from '@supabase/supabase-js';
 
+import { SITE_URL, ADMIN_EMAILS } from './config';
+
 interface AuthContextType {
   user: User | null;
   loading: boolean;
@@ -21,16 +23,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Admin email - STRICTLY restricted to your email
-  const ADMIN_EMAIL = 'aakashnarayanan465@gmail.com';
-
-  const ENV_ADMINS = (process.env.NEXT_PUBLIC_ADMIN_EMAILS || ADMIN_EMAIL)
-    .split(',')
-    .map((s) => s.trim().toLowerCase())
-    .filter(Boolean);
-
   // Strictly check if users email is the authorized one
-  const isAdmin = user ? (user.email?.toLowerCase() === ADMIN_EMAIL || ENV_ADMINS.includes(user.email?.toLowerCase() || '')) : false;
+  const isAdmin = user ? (ADMIN_EMAILS.includes(user.email?.toLowerCase() || '')) : false;
 
   useEffect(() => {
     const checkUser = async () => {
@@ -75,7 +69,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       await new Promise(resolve => setTimeout(resolve, 100));
 
       const { data: { user: authUser } } = await supabase.auth.getUser();
-      if (authUser && !ENV_ADMINS.includes(authUser.email?.toLowerCase() || '')) {
+      if (authUser && !ADMIN_EMAILS.includes(authUser.email?.toLowerCase() || '')) {
         await supabase.auth.signOut();
         setUser(null);
         throw new Error('Unauthorized: Only admins can access this area');
@@ -100,7 +94,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       if (currentUser) {
         // User is already logged in, check if they're an admin
         const userEmail = currentUser.email?.toLowerCase() || '';
-        if (!ENV_ADMINS.includes(userEmail)) {
+        if (!ADMIN_EMAILS.includes(userEmail)) {
           // Already logged in but not admin - sign them out first
           await supabase.auth.signOut();
           setUser(null);
@@ -112,11 +106,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
       
       // No existing session - start OAuth flow
-      // Direct redirect to dashboard after Google auth
+      // Use SITE_URL from config for redirect
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: 'https://akwithai.blog/admin/dashboard',
+          redirectTo: `${SITE_URL}/api/auth/callback`,
           queryParams: {
             prompt: 'select_account' // Force account selection to avoid auto-logging into wrong Gmail
           }

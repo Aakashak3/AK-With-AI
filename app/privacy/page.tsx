@@ -5,7 +5,7 @@ export const metadata: Metadata = {
     title: 'Privacy Policy | AK with AI',
     description: 'Read our privacy policy to understand how AK with AI collects and protects your data.',
     alternates: {
-        canonical: 'https://akwithai.com/privacy',
+        canonical: 'https://akwithai.blog/privacy',
     },
 };
 

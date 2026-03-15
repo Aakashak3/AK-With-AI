@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
             allow: '/',
             disallow: ['/admin/', '/api/'],
         },
-        sitemap: 'https://akwithai.com/sitemap.xml',
+        sitemap: 'https://akwithai.blog/sitemap.xml',
     };
 }

@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   title: 'About N. Aakash | Full Stack Developer & AI Expert',
   description: 'Learn about N. Aakash (AK with AI), a passionate Full Stack Developer and AI Automation Expert dedicated to building innovative digital solutions.',
   alternates: {
-    canonical: 'https://akwithai.com/about',
+    canonical: 'https://akwithai.blog/about',
   },
 };
 
