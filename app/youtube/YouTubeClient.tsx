@@ -15,50 +15,66 @@ interface Video {
     duration: string;
 }
 
+import { YOUTUBE_VIDEOS } from '@/lib/constants';
+
 export default function YouTubeClient() {
-    const [videos, setVideos] = useState<Video[]>([]);
+    const [videos, setVideos] = useState<any[]>(YOUTUBE_VIDEOS);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        console.log('YouTubeClient: useEffect firing');
         const fetchVideos = async () => {
+            console.log('YouTubeClient: fetchVideos starting');
+            const timeoutPromise = new Promise((_, reject) =>
+                setTimeout(() => reject(new Error('Request timed out')), 5000)
+            );
+
             try {
-                const { data } = await supabase
+                console.log('YouTubeClient: firing Supabase promise');
+                const fetchPromise = supabase
                     .from('videos')
                     .select('*')
                     .order('created_at', { ascending: false })
                     .returns<any[]>();
 
-                if (data) {
-                    const formattedVideos = data.map((v) => ({
+                const { data } = await Promise.race([fetchPromise, timeoutPromise]) as any;
+                console.log('YouTubeClient: data received', data?.length);
+
+                if (data && data.length > 0) {
+                    const formattedVideos = data.map((v: any) => ({
                         id: v.id,
                         title: v.title,
                         description: v.description || '',
                         thumbnailUrl: v.thumbnail_url || '',
                         videoUrl: v.youtube_url,
-                        duration: '10:00', // Mock duration or remove badge
+                        duration: '10:00',
                     }));
                     setVideos(formattedVideos);
+                } else {
+                    setVideos([]);
                 }
             } catch (error) {
                 console.error('Error fetching videos:', error);
+                setVideos([]);
             } finally {
                 setLoading(false);
             }
         };
 
         fetchVideos();
+
+        const timer = setTimeout(() => {
+            console.log('YouTubeClient: Safety net triggered');
+            setLoading(false);
+        }, 3000);
+        return () => clearTimeout(timer);
     }, []);
 
     return (
         <>
             <section className="min-h-[40vh] bg-gradient-to-b from-background via-background to-background px-4 py-20">
                 <div className="max-w-7xl mx-auto text-center">
-                    <motion.div
-                        initial={{ opacity: 0, y: -20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6 }}
-                        className="mb-8"
-                    >
+                    <div className="mb-8">
                         <div className="inline-block mb-6 text-5xl">📺</div>
                         <h1 className="text-5xl md:text-6xl font-bold text-white mb-4">
                             YouTube Channel
@@ -66,7 +82,7 @@ export default function YouTubeClient() {
                         <p className="text-lg text-foreground/70 max-w-2xl mx-auto">
                             Fun and easy AI tutorials, tools, and challenges 🤖<br />Beginner-friendly content to learn AI step by step 🚀
                         </p>
-                    </motion.div>
+                    </div>
                     <AdBanner location="youtube_top" className="mt-12 max-w-4xl mx-auto" />
                 </div>
             </section>

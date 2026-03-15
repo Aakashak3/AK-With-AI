@@ -21,38 +21,46 @@ interface Prompt {
     created_at: string;
 }
 
+import { PROMPT_DATA } from '@/lib/constants';
+
 export default function PromptsClient() {
     const [selectedCategory, setSelectedCategory] = useState('All');
     const [searchQuery, setSearchQuery] = useState('');
-    const [prompts, setPrompts] = useState<Prompt[]>([]);
-    const [categories, setCategories] = useState<Category[]>([]);
+    const [prompts, setPrompts] = useState<any[]>(PROMPT_DATA);
+    const [categories, setCategories] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        console.log('PromptsClient: useEffect firing');
         fetchData();
+
+        const timer = setTimeout(() => {
+            console.log('PromptsClient: Safety net triggered');
+            setLoading(false);
+        }, 3000);
+        return () => clearTimeout(timer);
     }, []);
 
     const fetchData = async () => {
-        try {
-            const { data: categoriesData } = await supabase
-                .from('prompt_categories')
-                .select('*')
-                .order('name');
+        console.log('PromptsClient: fetchData starting');
+        const timeoutPromise = new Promise((_, reject) =>
+            setTimeout(() => reject(new Error('Request timed out')), 5000)
+        );
 
-            if (categoriesData) {
-                setCategories(categoriesData);
+        try {
+            const fetchPromise = Promise.all([
+                supabase.from('prompt_categories').select('*').order('name'),
+                supabase.from('prompts').select('*, category:prompt_categories(name)').order('created_at', { ascending: false })
+            ]);
+
+            const [categoriesRes, promptsRes] = await Promise.race([fetchPromise, timeoutPromise]) as any;
+
+            if (categoriesRes.data) {
+                setCategories(categoriesRes.data);
             }
 
-            const { data: promptsData } = await supabase
-                .from('prompts')
-                .select(`
-          *,
-          category:prompt_categories(name)
-        `)
-                .order('created_at', { ascending: false });
-
-            if (promptsData) {
-                const formattedPrompts = promptsData.map((p: any) => ({
+            if (promptsRes.data && promptsRes.data.length > 0) {
+                const formattedPrompts = promptsRes.data.map((p: any) => ({
                     id: p.id,
                     title: p.title,
                     description: p.description || '',
@@ -62,9 +70,22 @@ export default function PromptsClient() {
                     created_at: p.created_at,
                 }));
                 setPrompts(formattedPrompts);
+            } else {
+                // Fallback to local data if DB is empty
+                const { PROMPT_DATA } = await import('@/lib/constants');
+                const fallbackData = PROMPT_DATA.map(p => ({ ...p, created_at: new Date().toISOString() }));
+                setPrompts(fallbackData);
             }
         } catch (error) {
             console.error('Error fetching data:', error);
+            // Fallback to local data on error
+            try {
+                const { PROMPT_DATA } = await import('@/lib/constants');
+                const fallbackData = PROMPT_DATA.map(p => ({ ...p, created_at: new Date().toISOString() }));
+                setPrompts(fallbackData);
+            } catch (innerError) {
+                console.error('Inner error importing constants:', innerError);
+            }
         } finally {
             setLoading(false);
         }
@@ -102,12 +123,7 @@ export default function PromptsClient() {
         <>
             <section className="min-h-[40vh] bg-gradient-to-b from-background via-background to-background px-4 py-20">
                 <div className="max-w-7xl mx-auto">
-                    <motion.div
-                        initial={{ opacity: 0, y: -20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6 }}
-                        className="text-center mb-12"
-                    >
+                    <div className="text-center mb-12">
                         <h1 className="text-4xl md:text-6xl font-bold text-white mb-4">
                             AI Prompts Library
                         </h1>
@@ -115,14 +131,9 @@ export default function PromptsClient() {
                             Professional prompts for image generation, video scripts, and coding tasks. Copy
                             and customize for your projects.
                         </p>
-                    </motion.div>
+                    </div>
 
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 0.5, delay: 0.1 }}
-                        className="max-w-2xl mx-auto mb-8"
-                    >
+                    <div className="max-w-2xl mx-auto mb-8">
                         <label htmlFor="search-prompts" className="sr-only">
                             Search prompts
                         </label>
@@ -140,7 +151,7 @@ export default function PromptsClient() {
                                 🔍
                             </div>
                         </div>
-                    </motion.div>
+                    </div>
                 </div>
             </section>
 
