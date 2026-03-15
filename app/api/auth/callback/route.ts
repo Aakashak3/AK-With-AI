@@ -7,6 +7,10 @@ export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const code = searchParams.get('code');
   
+  const forwardedHost = request.headers.get('x-forwarded-host');
+  const isLocalEnv = process.env.NODE_ENV === 'development';
+  const baseUrl = isLocalEnv || !forwardedHost ? origin : `https://${forwardedHost}`;
+
   if (!code) {
     return NextResponse.redirect(`${SITE_URL}/admin`);
   }
