@@ -93,8 +93,6 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-      </head>
-      <body className="bg-background text-foreground">
         {/* Google Analytics */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-W13PBC2WRG"
@@ -109,6 +107,8 @@ export default function RootLayout({
             gtag('config', 'G-W13PBC2WRG');
           `}
         </Script>
+      </head>
+      <body className="bg-background text-foreground">
         <AuthProvider>
           <Navbar />
           <main>{children}</main>
