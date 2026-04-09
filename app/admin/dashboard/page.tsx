@@ -12,6 +12,7 @@ interface DashboardStats {
   services: number;
   messages: number;
   ads: number;
+  articles: number;
 }
 
 export default function AdminDashboard() {
@@ -22,6 +23,7 @@ export default function AdminDashboard() {
     services: 0,
     messages: 0,
     ads: 0,
+    articles: 0,
   });
   const [loading, setLoading] = useState(true);
 
@@ -35,6 +37,7 @@ export default function AdminDashboard() {
           (supabase.from('services') as any).select('id', { count: 'exact' }),
           (supabase.from('messages') as any).select('id', { count: 'exact' }),
           (supabase.from('ads') as any).select('id', { count: 'exact' }),
+          (supabase.from('articles') as any).select('id', { count: 'exact' }),
         ]);
 
         setStats({
@@ -44,6 +47,7 @@ export default function AdminDashboard() {
           services: servicesRes.count || 0,
           messages: messagesRes.count || 0,
           ads: adsRes.count || 0,
+          articles: articlesRes.count || 0,
         });
       } catch (err) {
         console.error('Error fetching stats:', err);
@@ -61,6 +65,7 @@ export default function AdminDashboard() {
     { label: 'Projects', value: stats.projects, icon: '📁', color: 'from-orange-500/20 to-orange-500/5' },
     { label: 'Services', value: stats.services, icon: '🛠️', color: 'from-green-500/20 to-green-500/5' },
     { label: 'Ads', value: stats.ads, icon: '📢', color: 'from-indigo-500/20 to-indigo-500/5' },
+    { label: 'Articles', value: stats.articles, icon: '📝', color: 'from-yellow-500/20 to-yellow-500/5' },
     { label: 'Messages', value: stats.messages, icon: '💬', color: 'from-pink-500/20 to-pink-500/5' },
   ];
 
@@ -148,6 +153,16 @@ export default function AdminDashboard() {
                 📢 Manage Ads
               </p>
               <p className="text-sm text-foreground/60">Upload and position advertisements</p>
+            </Link>
+
+            <Link
+              href="/admin/dashboard/articles"
+              className="p-4 bg-gradient-to-r from-yellow-500/10 to-transparent border border-yellow-500/20 rounded-lg hover:border-yellow-500/50 transition-all duration-300 group"
+            >
+              <p className="font-semibold text-white group-hover:text-yellow-400 transition-colors">
+                📝 Manage Articles
+              </p>
+              <p className="text-sm text-foreground/60">Write and publish blog posts</p>
             </Link>
 
             <Link

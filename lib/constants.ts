@@ -1,6 +1,7 @@
 export const NAV_LINKS = [
   { label: 'Home', href: '/' },
   { label: 'AI Prompts', href: '/prompts' },
+  { label: 'Latest Articles', href: '/articles' },
   { label: 'YouTube', href: '/youtube' },
   { label: 'Services', href: '/services' },
   { label: 'About', href: '/about' },
@@ -36,6 +37,7 @@ export const FOOTER_SECTIONS = [
     links: [
       { label: 'Home', href: '/' },
       { label: 'AI Prompts', href: '/prompts' },
+      { label: 'Latest Articles', href: '/articles' },
       { label: 'YouTube', href: '/youtube' },
       { label: 'Services', href: '/services' },
     ],
@@ -272,6 +274,38 @@ export const CONTACT_METHODS = [
     link: 'https://linkedin.com/in/aakash-narayanan-054136318',
     bgColor: '#0077B5',
   },
+];
+export const ARTICLES_DATA = [
+  {
+    id: 'article-1',
+    title: 'How AI is Revolutionizing Web Development in 2024',
+    description: "Explore the latest trends in AI-driven development and how it's changing the landscape for engineers.",
+    image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&q=80&w=800',
+    date: 'April 10, 2024',
+    readTime: '5 min read',
+    slug: 'ai-revolutionizing-web-development',
+    tags: ['AI', 'Web Dev', 'Tech Trends']
+  },
+  {
+    id: 'article-2',
+    title: 'Mastering Prompt Engineering for Better Code',
+    description: 'Learn techniques to write better prompts that generate high-quality code and reduce debugging time.',
+    image: 'https://images.unsplash.com/photo-1664575602276-acd073f104c1?auto=format&fit=crop&q=80&w=800',
+    date: 'April 5, 2024',
+    readTime: '8 min read',
+    slug: 'mastering-prompt-engineering',
+    tags: ['Prompt Engineering', 'Coding', 'productivity']
+  },
+  {
+    id: 'article-3',
+    title: 'Building Scalable Apps with Next.js and Supabase',
+    description: 'A comprehensive guide to setting up a modern stack with seamless authentication and database management.',
+    image: 'https://images.unsplash.com/photo-1614741118887-7a4ee193a5fa?auto=format&fit=crop&q=80&w=800',
+    date: 'March 28, 2024',
+    readTime: '12 min read',
+    slug: 'building-scalable-apps-nextjs-supabase',
+    tags: ['Next.js', 'Supabase', 'Full Stack']
+  }
 ];
 
 export const PROJECTS_DATA = [
