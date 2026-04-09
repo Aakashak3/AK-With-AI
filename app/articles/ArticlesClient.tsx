@@ -14,8 +14,7 @@ export default function ArticlesClient() {
   useEffect(() => {
     const fetchArticles = async () => {
       try {
-        const { data, error } = await supabase
-          .from('articles')
+        const { data, error } = await (supabase.from('articles') as any)
           .select('*')
           .eq('status', 'published')
           .order('created_at', { ascending: false });

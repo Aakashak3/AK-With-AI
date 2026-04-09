@@ -50,14 +50,12 @@ export default function ArticleEditor({ id, initialData }: ArticleEditorProps) {
       
       let error;
       if (id) {
-        const { error: updateError } = await supabase
-          .from('articles')
+        const { error: updateError } = await (supabase.from('articles') as any)
           .update(dataToSave)
           .eq('id', id);
         error = updateError;
       } else {
-        const { error: insertError } = await supabase
-          .from('articles')
+        const { error: insertError } = await (supabase.from('articles') as any)
           .insert([dataToSave]);
         error = insertError;
       }

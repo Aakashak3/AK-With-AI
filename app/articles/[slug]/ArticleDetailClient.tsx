@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Calendar, Clock, ArrowLeft, Share2, Facebook, Twitter, Linkedin } from 'lucide-react';
+import { Calendar, Clock, ArrowLeft, Share2, Globe, MessageCircle, Mail } from 'lucide-react';
 import Link from 'next/link';
 
 interface ArticleDetailClientProps {
@@ -126,9 +126,9 @@ export default function ArticleDetailClient({ article }: ArticleDetailClientProp
               <Share2 size={16} /> Share:
             </span>
             <div className="flex items-center gap-2">
-              <button className="p-3 bg-white/5 hover:bg-[#1877F2]/20 hover:text-[#1877F2] rounded-xl transition-all"><Facebook size={20} /></button>
-              <button className="p-3 bg-white/5 hover:bg-[#1DA1F2]/20 hover:text-[#1DA1F2] rounded-xl transition-all"><Twitter size={20} /></button>
-              <button className="p-3 bg-white/5 hover:bg-[#0A66C2]/20 hover:text-[#0A66C2] rounded-xl transition-all"><Linkedin size={20} /></button>
+              <button className="p-3 bg-white/5 hover:bg-primary/20 hover:text-primary rounded-xl transition-all" title="Share link"><Globe size={20} /></button>
+              <button className="p-3 bg-white/5 hover:bg-primary/20 hover:text-primary rounded-xl transition-all" title="Share on social"><MessageCircle size={20} /></button>
+              <button className="p-3 bg-white/5 hover:bg-primary/20 hover:text-primary rounded-xl transition-all" title="Email article"><Mail size={20} /></button>
             </div>
           </div>
         </motion.footer>

@@ -30,7 +30,7 @@ export default function AdminDashboard() {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const [promptsRes, videosRes, projectsRes, servicesRes, messagesRes, adsRes] = await Promise.all([
+        const [promptsRes, videosRes, projectsRes, servicesRes, messagesRes, adsRes, articlesRes] = await Promise.all([
           (supabase.from('prompts') as any).select('id', { count: 'exact' }),
           (supabase.from('videos') as any).select('id', { count: 'exact' }),
           (supabase.from('projects') as any).select('id', { count: 'exact' }),

@@ -10,8 +10,7 @@ interface Props {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { data: article } = await supabase
-    .from('articles')
+  const { data: article } = await (supabase.from('articles') as any)
     .select('title, description, image_url')
     .eq('slug', params.slug)
     .single();
@@ -30,8 +29,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function ArticlePage({ params }: Props) {
-  const { data: article } = await supabase
-    .from('articles')
+  const { data: article } = await (supabase.from('articles') as any)
     .select('*')
     .eq('slug', params.slug)
     .single();

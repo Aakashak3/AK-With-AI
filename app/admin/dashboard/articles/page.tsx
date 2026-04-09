@@ -14,8 +14,7 @@ export default function ArticlesListPage() {
 
   const fetchArticles = async () => {
     try {
-      let query = supabase
-        .from('articles')
+      let query = (supabase.from('articles') as any)
         .select('*')
         .order('created_at', { ascending: false });
 
@@ -41,8 +40,7 @@ export default function ArticlesListPage() {
     if (!confirm('Are you sure you want to delete this article?')) return;
 
     try {
-      const { error } = await supabase
-        .from('articles')
+      const { error } = await (supabase.from('articles') as any)
         .delete()
         .eq('id', id);
       
