@@ -4,7 +4,10 @@ const nextConfig = {
   images: {
     unoptimized: false,
     formats: ['image/webp', 'image/avif'],
-    domains: ['uonhtwihplrrkczjtbmj.supabase.co'],
+    domains: [
+      'uonhtwihplrrkczjtbmj.supabase.co',
+      'img.youtube.com',
+    ],
   },
   typescript: {
     tsconfigPath: './tsconfig.json',

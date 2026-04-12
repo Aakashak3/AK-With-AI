@@ -4,12 +4,14 @@ import { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { supabase } from '@/lib/supabase';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Search, Calendar, Clock, ChevronRight } from 'lucide-react';
 
 export default function ArticlesClient() {
   const [articles, setArticles] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedLanguage, setSelectedLanguage] = useState<'english' | 'tanglish'>('english');
 
   useEffect(() => {
     const fetchArticles = async () => {
@@ -32,15 +34,17 @@ export default function ArticlesClient() {
   }, []);
 
   const filteredArticles = useMemo(() => {
-    return articles.filter(a => 
-      a.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      a.description?.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-  }, [articles, searchQuery]);
+    return articles.filter(a => {
+      const matchesSearch = a.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                            a.description?.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesLanguage = (a.language || 'english') === selectedLanguage;
+      return matchesSearch && matchesLanguage;
+    });
+  }, [articles, searchQuery, selectedLanguage]);
 
   return (
     <div className="min-h-screen bg-background pt-32 pb-20">
-      <div className="max-w-4xl mx-auto px-4">
+      <div className="max-w-7xl mx-auto px-4">
         {/* Header & Search */}
         <div className="text-center mb-16">
           <motion.h1 
@@ -55,31 +59,59 @@ export default function ArticlesClient() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="relative max-w-2xl mx-auto"
+            className="flex flex-col gap-6 max-w-2xl mx-auto"
           >
-            <Search className="absolute left-6 top-1/2 transform -translate-y-1/2 text-foreground/40" size={24} />
-            <input 
-              type="text"
-              placeholder="Search articles by title or keywords..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-16 pr-8 py-5 bg-white/5 border border-white/10 rounded-2xl text-white text-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all placeholder:text-foreground/30 shadow-2xl"
-            />
+            <div className="relative">
+              <Search className="absolute left-6 top-1/2 transform -translate-y-1/2 text-foreground/40" size={24} />
+              <input 
+                type="text"
+                placeholder="Search articles by title or keywords..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-16 pr-8 py-5 bg-white/5 border border-white/10 rounded-2xl text-white text-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all placeholder:text-foreground/30 shadow-2xl"
+              />
+            </div>
+
+            {/* Language Switcher */}
+            <div className="flex justify-center">
+              <div className="inline-flex items-center p-1.5 bg-white/5 border border-white/10 rounded-2xl backdrop-blur-sm">
+                <button
+                  onClick={() => setSelectedLanguage('english')}
+                  className={`px-8 py-2.5 rounded-xl font-bold transition-all duration-300 ${
+                    selectedLanguage === 'english' 
+                    ? 'bg-primary text-white shadow-neon' 
+                    : 'text-foreground/40 hover:text-white hover:bg-white/5'
+                  }`}
+                >
+                  English
+                </button>
+                <button
+                  onClick={() => setSelectedLanguage('tanglish')}
+                  className={`px-8 py-2.5 rounded-xl font-bold transition-all duration-300 ${
+                    selectedLanguage === 'tanglish' 
+                    ? 'bg-primary text-white shadow-neon' 
+                    : 'text-foreground/40 hover:text-white hover:bg-white/5'
+                  }`}
+                >
+                  Tanglish
+                </button>
+              </div>
+            </div>
           </motion.div>
         </div>
 
-        {/* Articles List - One by One */}
-        <div className="space-y-12">
+        {/* Articles Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {loading ? (
-            <div className="space-y-12">
-              {[1, 2, 3].map(i => (
+            <>
+              {[1, 2, 3, 4, 5, 6].map(i => (
                 <div key={i} className="animate-pulse flex flex-col gap-6">
                   <div className="w-full aspect-video bg-white/5 rounded-3xl" />
-                  <div className="h-8 bg-white/5 rounded-full w-3/4" />
-                  <div className="h-20 bg-white/5 rounded-2xl w-full" />
+                  <div className="h-6 bg-white/5 rounded-full w-3/4" />
+                  <div className="h-16 bg-white/5 rounded-2xl w-full" />
                 </div>
               ))}
-            </div>
+            </>
           ) : filteredArticles.length > 0 ? (
             <AnimatePresence mode="popLayout">
               {filteredArticles.map((article, index) => (
@@ -91,14 +123,16 @@ export default function ArticlesClient() {
                   viewport={{ once: true, margin: '-100px' }}
                   className="group relative bg-white/[0.02] border border-white/10 rounded-[2.5rem] overflow-hidden hover:border-primary/50 transition-all duration-500 hover:shadow-neon/20 hover:shadow-2xl"
                 >
-                  <div className="flex flex-col">
+                  <div className="flex flex-col h-full">
                     {/* Image */}
-                    <div className="w-full aspect-[21/9] overflow-hidden relative">
+                    <div className="w-full aspect-video overflow-hidden relative">
                       {article.image_url ? (
-                        <img 
+                        <Image 
                           src={article.image_url} 
                           alt={article.title}
-                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 ease-out"
+                          fill
+                          priority={index < 3}
+                          className="object-cover group-hover:scale-110 transition-transform duration-1000 ease-out"
                         />
                       ) : (
                         <div className="w-full h-full bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center">
@@ -107,39 +141,41 @@ export default function ArticlesClient() {
                       )}
                       <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent opacity-60" />
                     </div>
-
+ 
                     {/* Content */}
-                    <div className="p-8 md:p-12 -mt-12 relative bg-background/40 backdrop-blur-md rounded-t-[2.5rem] border-t border-white/10">
-                      <div className="flex flex-wrap items-center gap-6 text-sm text-foreground/50 mb-6">
-                        <span className="flex items-center gap-2">
-                          <Calendar size={16} className="text-primary" />
+                    <div className="p-6 md:p-8 -mt-8 relative bg-background/40 backdrop-blur-md rounded-t-[2.5rem] border-t border-white/10 flex flex-col flex-1">
+                      <div className="flex flex-wrap items-center gap-4 text-xs text-foreground/50 mb-4">
+                        <span className="flex items-center gap-1.5">
+                          <Calendar size={14} className="text-primary" />
                           {new Date(article.created_at).toLocaleDateString('en-US', {
-                            month: 'long',
+                            month: 'short',
                             day: 'numeric',
                             year: 'numeric'
                           })}
                         </span>
-                        <span className="flex items-center gap-2">
-                          <Clock size={16} className="text-accent" />
-                          {Math.ceil((article.content?.length || 0) / 1000)} min read
+                        <span className="flex items-center gap-1.5">
+                          <Clock size={14} className="text-accent" />
+                          {Math.ceil((article.content?.length || 0) / 1000)} min
                         </span>
                       </div>
-
-                      <h2 className="text-3xl md:text-4xl font-bold text-white mb-6 group-hover:text-primary transition-colors leading-tight">
+ 
+                      <h2 className="text-xl md:text-2xl font-bold text-white mb-4 group-hover:text-primary transition-colors leading-tight line-clamp-2">
                         {article.title}
                       </h2>
                       
-                      <p className="text-lg text-foreground/70 mb-10 line-clamp-3 leading-relaxed">
+                      <p className="text-sm text-foreground/70 mb-8 line-clamp-3 leading-relaxed flex-grow">
                         {article.description}
                       </p>
-
-                      <Link 
-                        href={`/articles/${article.slug}`}
-                        className="inline-flex items-center gap-3 px-8 py-4 bg-primary text-white font-bold rounded-2xl shadow-neon hover:shadow-neon-lg hover:scale-105 active:scale-95 transition-all group/btn"
-                      >
-                        Don't Miss This
-                        <ChevronRight size={20} className="group-hover/btn:translate-x-1 transition-transform" />
-                      </Link>
+ 
+                      <div className="mt-auto">
+                        <Link 
+                          href={`/articles/${article.slug}`}
+                          className="inline-flex items-center gap-2 px-6 py-3 bg-primary/10 text-primary border border-primary/20 font-bold rounded-xl shadow-neon/10 hover:shadow-neon/20 hover:bg-primary hover:text-white transition-all group/btn w-full justify-center"
+                        >
+                          Read More
+                          <ChevronRight size={18} className="group-hover/btn:translate-x-1 transition-transform" />
+                        </Link>
+                      </div>
                     </div>
                   </div>
                 </motion.article>

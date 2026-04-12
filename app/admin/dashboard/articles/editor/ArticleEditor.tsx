@@ -30,7 +30,9 @@ export default function ArticleEditor({ id, initialData }: ArticleEditorProps) {
     content: initialData?.content || '',
     image_url: initialData?.image_url || '',
     status: initialData?.status || 'draft',
+    language: initialData?.language || 'english',
   });
+  const [uploading, setUploading] = useState(false);
 
   // Auto-generate slug from title
   useEffect(() => {
@@ -42,6 +44,35 @@ export default function ArticleEditor({ id, initialData }: ArticleEditorProps) {
       setFormData(prev => ({ ...prev, slug: generatedSlug }));
     }
   }, [formData.title, id]);
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    try {
+      setUploading(true);
+      const file = e.target.files?.[0];
+      if (!file) return;
+
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${Math.random()}.${fileExt}`;
+      const filePath = `article-thumbnails/${fileName}`;
+
+      const { data, error: uploadError } = await supabase.storage
+        .from('articles')
+        .upload(filePath, file);
+
+      if (uploadError) throw uploadError;
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('articles')
+        .getPublicUrl(filePath);
+
+      setFormData(prev => ({ ...prev, image_url: publicUrl }));
+    } catch (err) {
+      console.error('Error uploading image:', err);
+      alert('Error uploading image');
+    } finally {
+      setUploading(false);
+    }
+  };
 
   const handleSave = async (status: 'draft' | 'published') => {
     setLoading(true);
@@ -64,6 +95,9 @@ export default function ArticleEditor({ id, initialData }: ArticleEditorProps) {
       
       router.push('/admin/dashboard/articles');
       router.refresh();
+      // Force a re-fetch of articles by reloading the page if necessary
+      // router.refresh() sometimes isn't enough for client components
+      window.location.href = '/admin/dashboard/articles';
     } catch (err) {
       console.error('Error saving article:', err);
       alert('Error saving article. Check console for details.');
@@ -172,20 +206,65 @@ export default function ArticleEditor({ id, initialData }: ArticleEditorProps) {
           {/* Featured Image */}
           <div className="bg-white/5 border border-white/10 rounded-xl p-6 space-y-4">
             <label className="text-sm font-medium text-foreground/60 flex items-center gap-2">
-              <ImageIcon size={16} /> Featured Image URL
+              <ImageIcon size={16} /> Featured Image
             </label>
-            <input
-              type="text"
-              value={formData.image_url}
-              onChange={(e) => setFormData(prev => ({ ...prev, image_url: e.target.value }))}
-              placeholder="https://..."
-              className="w-full px-4 py-2 bg-black/20 border border-white/10 rounded-lg text-sm text-foreground/80 focus:outline-none focus:ring-1 focus:ring-primary"
-            />
-            {formData.image_url && (
-              <div className="aspect-video rounded-lg overflow-hidden border border-white/10">
-                <img src={formData.image_url} alt="Preview" className="w-full h-full object-cover" />
+            
+            <div className="space-y-4">
+              <div className="flex items-center justify-center w-full">
+                <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-white/10 rounded-xl cursor-pointer hover:bg-white/5 transition-colors overflow-hidden">
+                  {uploading ? (
+                    <div className="flex flex-col items-center gap-2 text-foreground/40">
+                      <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
+                      <span className="text-xs">Uploading...</span>
+                    </div>
+                  ) : formData.image_url ? (
+                    <img src={formData.image_url} alt="Preview" className="w-full h-full object-cover" />
+                  ) : (
+                    <div className="flex flex-col items-center gap-2 text-foreground/40">
+                      <ImageIcon size={24} />
+                      <span className="text-xs font-medium">Click to upload thumbnail</span>
+                    </div>
+                  )}
+                  <input 
+                    type="file" 
+                    className="hidden" 
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                    disabled={uploading}
+                  />
+                </label>
               </div>
-            )}
+
+              <div className="space-y-2">
+                <label className="text-[10px] font-medium text-foreground/30 uppercase tracking-wider">
+                  Or manual Image URL
+                </label>
+                <input
+                  type="text"
+                  value={formData.image_url}
+                  onChange={(e) => setFormData(prev => ({ ...prev, image_url: e.target.value }))}
+                  placeholder="https://..."
+                  className="w-full px-4 py-2 bg-black/20 border border-white/10 rounded-lg text-sm text-foreground/80 focus:outline-none focus:ring-1 focus:ring-primary"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Language & Settings */}
+          <div className="bg-white/5 border border-white/10 rounded-xl p-6 space-y-4">
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-foreground/60 flex items-center gap-2">
+                <Type size={16} /> Article Language
+              </label>
+              <select
+                value={formData.language}
+                onChange={(e) => setFormData(prev => ({ ...prev, language: e.target.value }))}
+                className="w-full px-4 py-2 bg-black/20 border border-white/10 rounded-lg text-sm text-white focus:outline-none focus:ring-1 focus:ring-primary appearance-none"
+              >
+                <option value="english">English</option>
+                <option value="tanglish">Tanglish</option>
+              </select>
+            </div>
           </div>
 
           {/* Description / Summary */}

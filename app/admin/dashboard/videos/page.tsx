@@ -11,6 +11,7 @@ interface Video {
   description: string | null;
   youtube_url: string;
   thumbnail_url: string | null;
+  duration: string;
   created_at: string;
   user_id: string;
 }
@@ -28,6 +29,7 @@ export default function VideosPanel() {
     description: '',
     youtube_url: '',
     thumbnail_url: '',
+    duration: '',
   });
 
   useEffect(() => {
@@ -93,6 +95,7 @@ export default function VideosPanel() {
         description: formData.description,
         youtube_url: formData.youtube_url,
         thumbnail_url: getYoutubeThumbnail(youtubeId),
+        duration: formData.duration || '0:00',
         user_id: user.id,
       };
 
@@ -112,7 +115,7 @@ export default function VideosPanel() {
       await fetchVideos();
       setIsModalOpen(false);
       setEditingId(null);
-      setFormData({ title: '', description: '', youtube_url: '', thumbnail_url: '' });
+      setFormData({ title: '', description: '', youtube_url: '', thumbnail_url: '', duration: '' });
     } catch (err) {
       console.error('Error saving video:', err);
       alert('Error saving video');
@@ -125,6 +128,7 @@ export default function VideosPanel() {
       description: video.description || '',
       youtube_url: video.youtube_url,
       thumbnail_url: video.thumbnail_url || '',
+      duration: video.duration || '',
     });
     setEditingId(video.id);
     setIsModalOpen(true);
@@ -147,7 +151,7 @@ export default function VideosPanel() {
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setEditingId(null);
-    setFormData({ title: '', description: '', youtube_url: '', thumbnail_url: '' });
+    setFormData({ title: '', description: '', youtube_url: '', thumbnail_url: '', duration: '' });
   };
 
   const filteredVideos = videos.filter(
@@ -299,6 +303,18 @@ export default function VideosPanel() {
                   required
                 />
                 <p className="text-xs text-foreground/50 mt-1">Paste the full YouTube URL</p>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-white mb-2">Duration (e.g. 10:45) *</label>
+                <input
+                  type="text"
+                  value={formData.duration}
+                  onChange={(e) => setFormData({ ...formData, duration: e.target.value })}
+                  placeholder="0:00"
+                  className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white placeholder:text-foreground/40 focus:border-primary/50 outline-none transition-colors"
+                  required
+                />
               </div>
 
               <div>

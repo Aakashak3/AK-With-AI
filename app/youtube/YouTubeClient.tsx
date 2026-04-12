@@ -47,7 +47,7 @@ export default function YouTubeClient() {
                         description: v.description || '',
                         thumbnailUrl: v.thumbnail_url || '',
                         videoUrl: v.youtube_url,
-                        duration: '10:00',
+                        duration: v.duration || '0:00',
                     }));
                     setVideos(formattedVideos);
                 } else {

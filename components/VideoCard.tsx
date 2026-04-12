@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import GlassCard from './GlassCard';
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface VideoCardProps {
   video: {
@@ -32,10 +33,11 @@ export default function VideoCard({ video, delay = 0 }: VideoCardProps) {
           <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20" />
 
           {/* Thumbnail Image */}
-          <img
+          <Image
             src={video.thumbnailUrl}
             alt={video.title}
-            className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+            fill
+            className="object-cover transition-transform duration-500 group-hover:scale-110"
           />
 
           {/* Play Button Overlay */}

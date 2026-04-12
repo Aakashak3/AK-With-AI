@@ -11,10 +11,10 @@ export const metadata: Metadata = {
     default: 'AK with AI - Full Stack Developer & AI Automation Expert',
     template: '%s | AK with AI'
   },
-  description: 'N. Aakash - Crafting cutting-edge web applications powered by AI. Specializing in automation, prompt engineering, and full-stack development.',
-  keywords: ['N. Aakash', 'AK with AI', 'web development', 'AI automation', 'prompt engineering', 'Next.js', 'full-stack', 'freelance developer'],
-  authors: [{ name: 'N. Aakash' }],
-  creator: 'N. Aakash',
+  description: 'Aakash - Full Stack Developer & AI Automation Expert. Crafting cutting-edge web applications powered by AI. Specializing in automation, prompt engineering, and full-stack development.',
+  keywords: ['Aakash', 'AK with AI', 'web development', 'AI automation', 'prompt engineering', 'Next.js', 'full-stack', 'freelance developer'],
+  authors: [{ name: 'Aakash' }],
+  creator: 'Aakash',
   icons: {
     icon: '/favicon.png',
     shortcut: '/favicon.png',
@@ -24,22 +24,23 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     url: 'https://akwithai.blog',
-    siteName: 'AK with AI Portfolio',
+    siteName: 'AK with AI - Full Stack & AI Automation',
     title: 'AK with AI - Full Stack Developer & AI Automation Expert',
-    description: 'N. Aakash - Crafting cutting-edge web applications powered by AI.',
+    description: 'Aakash - Full Stack Developer & AI Automation Expert. Crafting cutting-edge web applications powered by AI.',
     images: [
       {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'AK with AI Portfolio',
+        alt: 'AK with AI - Full Stack, AI Automation',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'AK with AI - Full Stack Developer & AI Automation Expert',
-    description: 'N. Aakash - Crafting cutting-edge web applications powered by AI.',
+    description: 'Aakash - Crafting cutting-edge web applications powered by AI.',
+    images: ['/og-image.png'],
     creator: '@akwithai',
   },
   robots: {
@@ -66,7 +67,7 @@ export default function RootLayout({
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Person',
-    name: 'N. Aakash',
+    name: 'Aakash',
     url: 'https://akwithai.blog',
     jobTitle: 'Full Stack Developer & AI Automation Expert',
     sameAs: [
