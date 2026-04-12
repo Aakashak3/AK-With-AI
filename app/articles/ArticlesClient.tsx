@@ -35,10 +35,13 @@ export default function ArticlesClient() {
 
   const filteredArticles = useMemo(() => {
     return articles.filter(a => {
-      const matchesSearch = a.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                            a.description?.toLowerCase().includes(searchQuery.toLowerCase());
-      const matchesLanguage = (a.language || 'english') === selectedLanguage;
-      return matchesSearch && matchesLanguage;
+      const title = (selectedLanguage === 'tanglish' && a.title_ta) ? a.title_ta : a.title;
+      const desc = (selectedLanguage === 'tanglish' && a.description_ta) ? a.description_ta : a.description;
+      
+      const matchesSearch = title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                            (desc || '').toLowerCase().includes(searchQuery.toLowerCase());
+      
+      return matchesSearch;
     });
   }, [articles, searchQuery, selectedLanguage]);
 
@@ -160,11 +163,11 @@ export default function ArticlesClient() {
                       </div>
  
                       <h2 className="text-xl md:text-2xl font-bold text-white mb-4 group-hover:text-primary transition-colors leading-tight line-clamp-2">
-                        {article.title}
+                        {(selectedLanguage === 'tanglish' && article.title_ta) ? article.title_ta : article.title}
                       </h2>
                       
                       <p className="text-sm text-foreground/70 mb-8 line-clamp-3 leading-relaxed flex-grow">
-                        {article.description}
+                        {(selectedLanguage === 'tanglish' && article.description_ta) ? article.description_ta : article.description}
                       </p>
  
                       <div className="mt-auto">

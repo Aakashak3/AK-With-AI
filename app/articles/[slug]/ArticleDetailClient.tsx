@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Calendar, Clock, ArrowLeft, Share2, Globe, MessageCircle, Mail } from 'lucide-react';
 import Link from 'next/link';
@@ -9,6 +10,25 @@ interface ArticleDetailClientProps {
 }
 
 export default function ArticleDetailClient({ article }: ArticleDetailClientProps) {
+  const [lang, setLang] = useState<'en' | 'ta'>('en');
+
+  // Helper to get content based on language
+  const getContent = () => {
+    if (lang === 'ta' && article.title_ta) {
+      return {
+        title: article.title_ta,
+        description: article.description_ta,
+        content: article.content_ta
+      };
+    }
+    return {
+      title: article.title,
+      description: article.description,
+      content: article.content
+    };
+  };
+
+  const current = getContent();
   return (
     <div className="min-h-screen bg-background pt-32 pb-20">
       {/* Background Glow */}
@@ -33,44 +53,71 @@ export default function ArticleDetailClient({ article }: ArticleDetailClientProp
 
         {/* Header Section */}
         <header className="mb-12">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="flex flex-wrap items-center gap-6 text-sm text-foreground/50 mb-6"
-          >
-            <span className="flex items-center gap-2">
-              <Calendar size={18} className="text-primary" />
-              {new Date(article.created_at).toLocaleDateString('en-US', {
-                month: 'long',
-                day: 'numeric',
-                year: 'numeric'
-              })}
-            </span>
-            <span className="flex items-center gap-2">
-              <Clock size={18} className="text-accent" />
-              {Math.ceil((article.content?.length || 0) / 1000)} min read
-            </span>
-            <span className="px-3 py-1 bg-primary/10 text-primary border border-primary/20 rounded-full text-[10px] font-bold uppercase tracking-widest">
-              Success Story
-            </span>
-          </motion.div>
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="flex flex-wrap items-center gap-6 text-sm text-foreground/50"
+            >
+              <span className="flex items-center gap-2">
+                <Calendar size={18} className="text-primary" />
+                {new Date(article.created_at).toLocaleDateString('en-US', {
+                  month: 'long',
+                  day: 'numeric',
+                  year: 'numeric'
+                })}
+              </span>
+              <span className="flex items-center gap-2">
+                <Clock size={18} className="text-accent" />
+                {Math.ceil((current.content?.length || 0) / 1000)} min read
+              </span>
+            </motion.div>
+
+            {/* Language Toggle */}
+            {article.title_ta && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="inline-flex p-1 bg-white/5 border border-white/10 rounded-xl"
+              >
+                <button
+                  onClick={() => setLang('en')}
+                  className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                    lang === 'en' ? 'bg-primary text-white shadow-neon' : 'text-foreground/40 hover:text-white'
+                  }`}
+                >
+                  English
+                </button>
+                <button
+                  onClick={() => setLang('ta')}
+                  className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                    lang === 'ta' ? 'bg-primary text-white shadow-neon' : 'text-foreground/40 hover:text-white'
+                  }`}
+                >
+                  Tanglish
+                </button>
+              </motion.div>
+            )}
+          </div>
 
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
+            key={`title-${lang}`}
             className="text-4xl md:text-6xl font-bold text-white mb-8 leading-tight"
           >
-            {article.title}
+            {current.title}
           </motion.h1>
 
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
+            key={`desc-${lang}`}
             className="text-xl text-foreground/70 leading-relaxed border-l-4 border-primary pl-6"
           >
-            {article.description}
+            {current.description}
           </motion.p>
         </header>
 
@@ -84,22 +131,22 @@ export default function ArticleDetailClient({ article }: ArticleDetailClientProp
           >
             <img 
               src={article.image_url} 
-              alt={article.title}
+              alt={current.title}
               className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-background/40 to-transparent" />
           </motion.div>
         )}
 
-        {/* Content Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
+          key={`content-${lang}`}
           className="prose prose-invert prose-lg max-w-none prose-primary"
         >
           <div 
-            dangerouslySetInnerHTML={{ __html: article.content }} 
+            dangerouslySetInnerHTML={{ __html: current.content }} 
             className="article-content"
           />
         </motion.div>
@@ -112,11 +159,11 @@ export default function ArticleDetailClient({ article }: ArticleDetailClientProp
           className="mt-20 pt-10 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-8"
         >
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center text-white font-bold">
+            <div className="w-12 h-12 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center text-white font-bold text-lg shadow-neon/30 shadow-lg">
               AK
             </div>
             <div>
-              <p className="text-white font-bold">N. Aakash</p>
+              <p className="text-white font-bold">Aakash</p>
               <p className="text-sm text-foreground/50">Full Stack Developer & AI Specialist</p>
             </div>
           </div>

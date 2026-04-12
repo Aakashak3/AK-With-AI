@@ -30,7 +30,9 @@ export default function ArticleEditor({ id, initialData }: ArticleEditorProps) {
     content: initialData?.content || '',
     image_url: initialData?.image_url || '',
     status: initialData?.status || 'draft',
-    language: initialData?.language || 'english',
+    title_ta: initialData?.title_ta || '',
+    description_ta: initialData?.description_ta || '',
+    content_ta: initialData?.content_ta || '',
   });
   const [uploading, setUploading] = useState(false);
 
@@ -158,7 +160,7 @@ export default function ArticleEditor({ id, initialData }: ArticleEditorProps) {
           {/* Title */}
           <div className="space-y-2">
             <label className="text-sm font-medium text-foreground/60 flex items-center gap-2">
-              <Type size={16} /> Article Title
+              <Type size={16} /> Article Title (English)
             </label>
             <input
               type="text"
@@ -172,13 +174,52 @@ export default function ArticleEditor({ id, initialData }: ArticleEditorProps) {
           {/* Editor */}
           <div className="space-y-2">
             <label className="text-sm font-medium text-foreground/60 flex items-center gap-2">
-              <FileText size={16} /> Content
+              <FileText size={16} /> Content (English)
             </label>
             <div className="bg-white/5 border border-white/10 rounded-xl overflow-hidden min-h-[500px]">
               <ReactQuill
                 theme="snow"
                 value={formData.content}
                 onChange={(content) => setFormData(prev => ({ ...prev, content }))}
+                modules={modules}
+                className="quill-dark"
+              />
+            </div>
+          </div>
+
+          {/* Separator */}
+          <div className="py-8">
+            <div className="h-px bg-white/10 w-full relative">
+              <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 px-4 bg-background text-primary font-bold text-sm tracking-widest uppercase">
+                Tanglish Version
+              </span>
+            </div>
+          </div>
+
+          {/* Tanglish Title */}
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-foreground/60 flex items-center gap-2">
+              <Type size={16} /> Tanglish Title
+            </label>
+            <input
+              type="text"
+              value={formData.title_ta}
+              onChange={(e) => setFormData(prev => ({ ...prev, title_ta: e.target.value }))}
+              placeholder="Enter Tanglish title..."
+              className="w-full px-6 py-4 bg-white/5 border border-white/10 rounded-xl text-xl font-bold text-white focus:outline-none focus:ring-2 focus:ring-primary transition-all"
+            />
+          </div>
+
+          {/* Tanglish Editor */}
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-foreground/60 flex items-center gap-2">
+              <FileText size={16} /> Content (Tanglish)
+            </label>
+            <div className="bg-white/5 border border-white/10 rounded-xl overflow-hidden min-h-[500px]">
+              <ReactQuill
+                theme="snow"
+                value={formData.content_ta}
+                onChange={(content) => setFormData(prev => ({ ...prev, content_ta: content }))}
                 modules={modules}
                 className="quill-dark"
               />
@@ -250,27 +291,24 @@ export default function ArticleEditor({ id, initialData }: ArticleEditorProps) {
             </div>
           </div>
 
-          {/* Language & Settings */}
+          {/* Tanglish Description */}
           <div className="bg-white/5 border border-white/10 rounded-xl p-6 space-y-4">
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-foreground/60 flex items-center gap-2">
-                <Type size={16} /> Article Language
-              </label>
-              <select
-                value={formData.language}
-                onChange={(e) => setFormData(prev => ({ ...prev, language: e.target.value }))}
-                className="w-full px-4 py-2 bg-black/20 border border-white/10 rounded-lg text-sm text-white focus:outline-none focus:ring-1 focus:ring-primary appearance-none"
-              >
-                <option value="english">English</option>
-                <option value="tanglish">Tanglish</option>
-              </select>
-            </div>
+            <label className="text-sm font-medium text-foreground/60 flex items-center gap-2">
+              <FileText size={16} /> Tanglish Summary
+            </label>
+            <textarea
+              value={formData.description_ta}
+              onChange={(e) => setFormData(prev => ({ ...prev, description_ta: e.target.value }))}
+              rows={4}
+              placeholder="Brief description in Tanglish..."
+              className="w-full px-4 py-2 bg-black/20 border border-white/10 rounded-lg text-sm text-foreground/80 focus:outline-none focus:ring-1 focus:ring-primary resize-none"
+            />
           </div>
 
           {/* Description / Summary */}
           <div className="bg-white/5 border border-white/10 rounded-xl p-6 space-y-4">
             <label className="text-sm font-medium text-foreground/60 flex items-center gap-2">
-              <FileText size={16} /> Short Summary
+              <FileText size={16} /> Short Summary (English)
             </label>
             <textarea
               value={formData.description}
