@@ -10,12 +10,15 @@ interface Props {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { data: article } = await (supabase.from('articles') as any)
+  const { data: article, error } = await (supabase.from('articles') as any)
     .select('title, description, image_url')
-    .eq('slug', params.slug)
+    .ilike('slug', params.slug)
     .single();
 
-  if (!article) return { title: 'Article Not Found' };
+  if (error) {
+    console.error('Metadata Fetch Error for slug:', params.slug, error);
+    return { title: 'Article Not Found' };
+  }
 
   return {
     title: `${article.title} | AK with AI`,
@@ -29,12 +32,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function ArticlePage({ params }: Props) {
-  const { data: article } = await (supabase.from('articles') as any)
+  console.log('Fetching article for slug:', params.slug);
+  
+  const { data: article, error } = await (supabase.from('articles') as any)
     .select('*')
-    .eq('slug', params.slug)
+    .ilike('slug', params.slug)
     .single();
 
-  if (!article) {
+  if (error || !article) {
+    console.error('Article Fetch Error:', error);
     notFound();
   }
 

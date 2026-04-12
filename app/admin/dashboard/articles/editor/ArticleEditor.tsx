@@ -38,14 +38,14 @@ export default function ArticleEditor({ id, initialData }: ArticleEditorProps) {
 
   // Auto-generate slug from title
   useEffect(() => {
-    if (!id && formData.title) {
+    if (formData.title && !formData.slug) {
       const generatedSlug = formData.title
         .toLowerCase()
         .replace(/[^a-z0-9]+/g, '-')
         .replace(/(^-|-$)+/g, '');
       setFormData(prev => ({ ...prev, slug: generatedSlug }));
     }
-  }, [formData.title, id]);
+  }, [formData.title, formData.slug]);
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     try {
