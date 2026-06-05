@@ -85,6 +85,8 @@ export default function RootLayout({
     ]
   };
 
+  const gaId = process.env.NEXT_PUBLIC_GA_ID || 'G-W13PBC2WRG';
+
   return (
     <html lang="en" className="dark">
       <head>
@@ -94,9 +96,11 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
+      </head>
+      <body className="bg-background text-foreground">
         {/* Google Analytics */}
         <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-W13PBC2WRG"
+          src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
           strategy="afterInteractive"
         />
         <Script id="google-analytics" strategy="afterInteractive">
@@ -105,11 +109,9 @@ export default function RootLayout({
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
 
-            gtag('config', 'G-W13PBC2WRG');
+            gtag('config', '${gaId}');
           `}
         </Script>
-      </head>
-      <body className="bg-background text-foreground">
         <AuthProvider>
           <Navbar />
           <main>{children}</main>

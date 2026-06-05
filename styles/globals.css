@@ -16,7 +16,6 @@
 
   body {
     @apply bg-background text-foreground;
-    font-feature-settings: 'rasterization' 1;
   }
 
   h1,

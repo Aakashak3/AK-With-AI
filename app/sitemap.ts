@@ -9,6 +9,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         '/services',
         '/youtube',
         '/prompts',
+        '/articles',
         '/contact',
         '/privacy',
         '/terms',

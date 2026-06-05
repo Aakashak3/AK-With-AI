@@ -27,7 +27,7 @@ function AdminLoginContent() {
     setIsLoading(true);
     try {
       await login(email, password);
-      await new Promise(resolve => setTimeout(resolve, 300));
+      router.push('/admin/dashboard');
     } catch (err) {
       console.error('Login error:', err);
     } finally {

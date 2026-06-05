@@ -7,6 +7,7 @@ const nextConfig = {
     domains: [
       'uonhtwihplrrkczjtbmj.supabase.co',
       'img.youtube.com',
+      'images.unsplash.com',
     ],
   },
   typescript: {
@@ -35,7 +36,7 @@ const nextConfig = {
           },
           {
             key: 'Content-Security-Policy',
-            value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https: https://www.googletagmanager.com https://www.google-analytics.com; font-src 'self' data:; connect-src 'self' https: wss://uonhtwihplrrkczjtbmj.supabase.co uonhtwihplrrkczjtbmj.supabase.co https://www.googletagmanager.com https://www.google-analytics.com *; frame-ancestors 'none';",
+            value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https: https://www.googletagmanager.com https://www.google-analytics.com; font-src 'self' data:; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://www.googletagmanager.com https://www.google-analytics.com; frame-ancestors 'none';",
           },
         ],
       },

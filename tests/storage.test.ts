@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
 const mockUpload = vi.fn();
 const mockGetPublicUrl = vi.fn();
-const mockFrom = vi.fn(() => ({
+const mockFrom = vi.fn((_bucket: string) => ({
   upload: mockUpload,
   getPublicUrl: mockGetPublicUrl,
 }));

@@ -9,7 +9,7 @@ export async function GET(request: NextRequest) {
   
   const forwardedHost = request.headers.get('x-forwarded-host');
   const isLocalEnv = process.env.NODE_ENV === 'development';
-  const baseUrl = isLocalEnv || !forwardedHost ? origin : `https://${forwardedHost}`;
+  const baseUrl = isLocalEnv || !forwardedHost ? SITE_URL : `https://${forwardedHost}`;
 
   if (!code) {
     return NextResponse.redirect(`${SITE_URL}/admin`);
