@@ -13,7 +13,7 @@ const ReactQuill = dynamic(() => import('react-quill'), {
   ssr: false,
   loading: () => <div className="h-64 bg-white/5 animate-pulse rounded-lg" />
 });
-import 'react-quill/dist/quill.snow.css';
+// CSS import moved into component; will be loaded lazily
 
 interface ArticleEditorProps {
   id?: string;
@@ -21,6 +21,10 @@ interface ArticleEditorProps {
 }
 
 export default function ArticleEditor({ id, initialData }: ArticleEditorProps) {
+  // Load Quill stylesheet only when this component mounts
+  useEffect(() => {
+    import('react-quill/dist/quill.snow.css');
+  }, []);
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({

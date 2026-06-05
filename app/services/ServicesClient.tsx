@@ -133,7 +133,7 @@ export default function ServicesClient() {
                                             id: project.id,
                                             title: project.title,
                                             description: project.description || '',
-                                            image: project.image_url || 'https://placehold.co/400x300?text=Project',
+                                            image: project.image_url || '',
                                             demoUrl: project.demo_url || '#',
                                             tags: project.tags || [],
                                         }}

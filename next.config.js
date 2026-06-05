@@ -4,10 +4,22 @@ const nextConfig = {
   images: {
     unoptimized: false,
     formats: ['image/webp', 'image/avif'],
-    domains: [
-      'uonhtwihplrrkczjtbmj.supabase.co',
-      'img.youtube.com',
-      'images.unsplash.com',
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'uonhtwihplrrkczjtbmj.supabase.co',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'img.youtube.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+        pathname: '/**',
+      },
     ],
   },
   typescript: {

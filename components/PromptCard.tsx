@@ -49,14 +49,7 @@ export default function PromptCard({ prompt, delay = 0 }: PromptCardProps) {
         >
           {prompt.image_url ? (
             prompt.image_url.match(/\.(mp4|webm|ogg)$/i) || prompt.image_url.includes('video') ? (
-              <video
-                src={prompt.image_url}
-                className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
-                autoPlay
-                loop
-                muted
-                playsInline
-              />
+              <div className="flex items-center justify-center w-full h-full bg-gray-800 text-white">Video preview unavailable</div>
             ) : (
               <img
                 src={prompt.image_url}

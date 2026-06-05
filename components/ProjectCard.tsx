@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface ProjectCardProps {
   project: {
@@ -27,21 +28,17 @@ export default function ProjectCard({ project, delay = 0 }: ProjectCardProps) {
     >
       {/* Image Container */}
       <div className="relative overflow-hidden h-48 md:h-56 bg-black/20 flex-shrink-0">
-        {project.image.match(/\.(mp4|webm|ogg)$/i) || project.image.includes('video') ? (
-          <video
-            src={project.image}
-            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-            autoPlay
-            loop
-            muted
-            playsInline
-          />
-        ) : (
-          <motion.img
+        {project.image && (project.image.match(/\.(mp4|webm|ogg)$/i) || project.image.includes('video')) ? (
+          <div className="flex items-center justify-center w-full h-full bg-gray-800 text-white">Video preview unavailable</div>
+        ) : project.image ? (
+          <Image
             src={project.image}
             alt={project.title}
-            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+            fill
+            className="object-cover group-hover:scale-110 transition-transform duration-500"
           />
+        ) : (
+          <div className="flex items-center justify-center w-full h-full bg-gray-200 text-gray-600">Placeholder</div>
         )}
         {/* Overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
