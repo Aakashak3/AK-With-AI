@@ -32,13 +32,13 @@ export default function VideoCard({ video, delay = 0 }: VideoCardProps) {
           {/* Fallback gradient background */}
           <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20" />
 
-            {/* Thumbnail Image fallback */}
-            <Image
-              src={video.thumbnailUrl}
-              alt={video.title}
-              fill
-              className="object-cover transition-transform duration-500 group-hover:scale-110"
-            />
+          {/* Thumbnail Image fallback */}
+          <Image
+            src={video.thumbnailUrl}
+            alt={video.title}
+            fill
+            className="object-cover transition-transform duration-500 group-hover:scale-110"
+          />
 
           {/* Play Button Overlay */}
           <motion.div

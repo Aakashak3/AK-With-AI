@@ -32,16 +32,12 @@ export default function ServiceCard({ service, delay = 0 }: ServiceCardProps) {
               {service.image_url.match(/\.(mp4|webm|ogg)$/i) || service.image_url.includes('video') ? (
                 <div className="flex items-center justify-center w-full h-full bg-gray-800 text-white">Video preview unavailable</div>
               ) : (
-                service.image_url ? (
-                  <Image
-                    src={service.image_url}
-                    alt={service.title}
-                    fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
-                ) : (
-                  <div className="flex items-center justify-center w-full h-full bg-gray-200 text-gray-600">Placeholder</div>
-                )
+                <Image
+                  src={service.image_url}
+                  alt={service.title}
+                  fill
+                  className="object-cover transition-transform duration-500 group-hover:scale-110"
+                />
               )}
             </div>
           ) : (
